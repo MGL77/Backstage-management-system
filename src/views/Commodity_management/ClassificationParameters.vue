@@ -269,7 +269,7 @@ export default {
     //   获取所有的商品分类列表
     async getCateList() {
       const res = await getGoodsCate();
-      console.log("商品分类", res);
+      // console.log("商品分类", res);
       this.cateList = res.result;
     },
 
@@ -350,9 +350,6 @@ export default {
         method: "get",
         params: {
           attr_sel: this.activeTabsName
-        },
-        headers: {
-          Authorization: localStorage.getItem("token")
         }
       });
 
@@ -414,7 +411,7 @@ export default {
           Authorization: localStorage.getItem("token")
         }
       });
-      console.log("删除", res);
+      // console.log("删除", res);
       if (res.meta.status !== 200) {
         return this.$message.error("删除参数失败！");
       }
@@ -424,7 +421,7 @@ export default {
 
     // 文本框失去焦点,或者按下Enter触发
     handleInputConfirm(row) {
-      console.log("handleInputConfirm");
+      // console.log("handleInputConfirm");
 
       // 输入的内容为空时，清空
       if (row.inputValue.trim().length === 0) {
@@ -441,7 +438,7 @@ export default {
 
     // 将对attr_vals（Tag） 的操作 保存到数据库
     async saveAttrVals(row) {
-      console.log("saveAttrVals");
+      // console.log("saveAttrVals");
 
       const { data: res } = await this.http({
         url: `https://www.liulongbin.top:8888/api/private/v1/categories/${this.getCateId}/attributes/${row.attr_id}`,
@@ -463,7 +460,7 @@ export default {
 
     // 点击按钮显示输入框
     showInput(row) {
-      console.log("showInput");
+      // console.log("showInput");
       // this.isShow = true
       row.inputVisible = true;
       // console.log(row)
@@ -476,7 +473,7 @@ export default {
 
     // 删除对应的参数可选项
     handleClose(i, row) {
-      console.log("handleClose");
+      // console.log("handleClose");
       row.attr_vals.splice(i, 1);
       this.saveAttrVals(row);
     }

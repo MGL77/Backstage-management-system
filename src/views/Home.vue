@@ -14,14 +14,18 @@
 
       <el-container>
         <!-- 左侧开始 -->
-        <el-aside width="200px">
+        <el-aside :width="isCollapse ? '64px' : '200px'">
+          <!-- 折叠开始 -->
+          <div class="toggle-button" @click="togleCollapse">∮</div>
+          <!-- 折叠结束 -->
           <el-menu
-            default-active="2"
+            default-active="1-4-1"
             class="el-menu-vertical-demo"
             :unique-opened="true"
             text-color="#000"
             active-text-color="#ffd04b"
             :router="true"
+            :collapse="isCollapse"
           >
             <!-- 1 -->
             <el-submenu index="1">
@@ -98,6 +102,7 @@
           </el-menu>
         </el-aside>
         <!-- 左侧结束 -->
+
         <!-- 右侧开始 -->
         <el-main>
           <router-view></router-view>
@@ -111,9 +116,18 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      // 折叠
+      isCollapse: true
+    };
   },
   methods: {
+    // 折叠开始
+    togleCollapse() {
+      this.isCollapse = !this.isCollapse;
+    },
+    // 折叠结束
+
     LoginOut() {
       // 清除token
       localStorage.removeItem("token");
@@ -125,6 +139,20 @@ export default {
 </script>
 
 <style scoped>
+.toggle-button {
+  background-color: darkslategray;
+  font-size: 16px;
+  line-height: 60px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+  width: 200px;
+  min-height: 400px;
+}
 .el-menu img {
   width: 16px;
   height: 16px;
