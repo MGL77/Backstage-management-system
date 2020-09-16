@@ -443,8 +443,8 @@ export default {
 }
 .addUser {
   margin-left: 20px;
-  background-color: #c99117;
-  border-color: #c99117;
+  background-color: #4f78a9;
+  border-color: #4f78a9;
   color: #fff;
 }
 .search {

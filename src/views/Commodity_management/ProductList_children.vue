@@ -110,8 +110,17 @@
           <!-- 5开始 ------------------------------------->
           <el-tab-pane name="5" label="商品内容">
             <!-- 富文本开始 -->
-            <div id="Test">
+            <!-- <div id="Test">
               <quill-editor ref="myTextEditor" v-model="goodsForm.goods_introduce"></quill-editor>
+            </div>-->
+            <div class="testuploadquillpicandback">
+              <quill-editor
+                @change="onEditorChange($event)"
+                id="desc"
+                ref="quill"
+                v-model="goodsForm.goods_introduce"
+                :options="editorOption"
+              ></quill-editor>
             </div>
             <!-- 富文本结束 -->
             <el-button type="success" size="small" class="cheng" @click="addGoods">添加商品</el-button>
@@ -135,7 +144,9 @@ import {
 } from "../../http/api";
 
 // 富文本
-import { quillEditor } from "vue-quill-editor"; // 调用富文本编辑器
+import { quillEditor, Quill } from "vue-quill-editor"; // 调用富文本编辑器
+import { container, ImageExtend, QuillWatch } from "quill-image-extend-module";
+Quill.register("modules/ImageExtend", ImageExtend);
 // 富文本编辑器外部引用样式
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
@@ -147,6 +158,72 @@ export default {
   },
   data() {
     return {
+      // 富文本开始
+      desc: "",
+      editorOption: {
+        placeholder: "此处输入赛事规程",
+        modules: {
+          ImageExtend: {
+            loading: true,
+            name: "file", //图片参数名
+            size: 5, // 可选参数 图片大小，单位为M，1M = 1024kb
+            action: "https://www.liulongbin.top:8888/api/private/v1/upload", //上传的服务器地址，如果action为空，则采用base64插入图片
+            // response 为一个函数，用来获取服务器返回的具体图片地址
+            response: res => {
+              console.log(res);
+              const imgUrl = res.data.url;
+              return imgUrl;
+            },
+            headers: xhr => {
+              // 上传图片请求需要携带token的 在xhr.setRequestHeader中设置，这里我的token存放在sessionStorage中
+              xhr.setRequestHeader(
+                "Authorization",
+                localStorage.getItem("token")
+              );
+            },
+            // 可选参数 设置请求头部
+            sizeError: () => {}, // 图片超过大小的回调
+            start: () => {}, // 可选参数 自定义开始上传触发事件
+            end: () => {}, // 可选参数 自定义上传结束触发的事件，无论成功或者失败
+            error: () => {}, // 可选参数 上传失败触发的事件
+            success: () => {
+              console.log("ImageExtend中的success：上传成功");
+            }, // 可选参数  上传成功触发的事件
+            change: (xhr, formData) => {
+              // xhr.setRequestHeader('myHeader','myValue')
+              // formData.append('token', 'myToken')
+            } // 可选参数 每次选择图片触发，也可用来设置头部，但比headers多了一个参数，可设置formData
+          },
+          // 如果不上传图片到服务器，此处不必配置
+          toolbar: {
+            // container为工具栏，此次引入了全部工具栏，也可自行配置
+            container: [
+              ["bold", "italic", "underline", "strike"],
+              ["blockquote", "code-block"],
+              [{ header: 1 }, { header: 2 }],
+              [{ list: "ordered" }, { list: "bullet" }],
+              [{ script: "sub" }, { script: "super" }],
+              [{ indent: "-1" }, { indent: "+1" }],
+              [{ direction: "rtl" }],
+              [{ size: ["small", false, "large", "huge"] }],
+              [{ header: [1, 2, 3, 4, 5, 6, false] }],
+              [{ color: [] }, { background: [] }],
+              [{ font: [] }],
+              [{ align: [] }],
+              ["image"]
+            ],
+            // 上传成功，回显图片（会进入如上面ImageExtend的各过程，返回<img src="http://xx.xx.xx.xx:xxxx/file/xxx.jpg">）
+            handlers: {
+              image: function() {
+                // 劫持原来的图片点击按钮事件
+                QuillWatch.emit(this.quill.id);
+              }
+            }
+          }
+        }
+      },
+      //  富文本结束
+
       // 大表单(最后要提交到后台的是大表单内的所有信息)
       /**
        * goods_name	商品名称	不能为空
@@ -225,6 +302,12 @@ export default {
   },
 
   methods: {
+    // 富文本quill的change事件
+    onEditorChange(e) {
+      console.log("onEditorChange打印e");
+      console.log(e);
+    },
+
     // 获取级联商品分类数据
     async GetGoods() {
       // 调接口

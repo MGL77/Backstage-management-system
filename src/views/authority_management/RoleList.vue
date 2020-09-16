@@ -10,7 +10,11 @@
     <el-card class="box-card">
       <!-- 添加角色 -->
       <div class="addRole">
-        <el-button type="primary" size="small" @click="OpenRole">添加角色</el-button>
+        <el-button
+          size="small"
+          @click="OpenRole"
+          style="background-color:#5a3a16;border-color:#5a3a16"
+        >添加角色</el-button>
       </div>
       <!-- 表格 -->
       <div class="table" style="font-size: 12px;height:400px;overflow:auto">

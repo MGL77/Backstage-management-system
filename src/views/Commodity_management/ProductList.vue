@@ -282,8 +282,8 @@ export default {
 }
 .AddUser {
   margin-left: 20px;
-  background-color: #5a3a16;
-  border-color: #5a3a16;
+  background-color: #e29407;
+  border-color: #e29407;
   color: #fff;
 }
 .search {
