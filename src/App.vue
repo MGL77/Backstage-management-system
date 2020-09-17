@@ -8,5 +8,6 @@
 #app {
   width: 100%;
   height: 100%;
+  user-select: none;
 }
 </style>

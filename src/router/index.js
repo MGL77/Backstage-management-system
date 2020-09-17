@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
+
+
 Vue.use(VueRouter);
 
 /**
@@ -9,6 +11,8 @@ Vue.use(VueRouter);
 
 // 测试
 import About from "../views/About.vue"
+// 首页图表展示
+import welcome from "../views/login/welcome.vue"
 // 登录
 const login = () => import("../views/login")
 // 主页
@@ -40,6 +44,7 @@ export default new VueRouter({
       path: "/",
       component: home,
       name: "home",
+      redirect: '/welcome',
       meta: {
         auth: true
       },
@@ -83,7 +88,11 @@ export default new VueRouter({
         {
           path: "/ProductList/ProductList_children",
           component: ProductList_children
-        }
+        },
+        {
+          path: "/welcome",
+          component: welcome
+        },
       ]
     },
     {

@@ -1,4 +1,6 @@
   import axios from "axios";
+  //   import NProgress from "nprogress";
+  //   import "nprogress/nprogress.css";
   import {
       Message
   } from "element-ui";
@@ -11,6 +13,7 @@
   //请求拦截器
   service.interceptors.request.use(
       function (config) {
+          //   NProgress.start()
           //   如果不是登录页 必须携带token到后端  才能正常返回数据
           //   console.log("config..", config)
           //   判断如果不是login页 获取token 并通过请求头携带到后端
@@ -30,6 +33,7 @@
   //响应拦截器
   service.interceptors.response.use(
       function (response) {
+          //   NProgress.done()
           const {
               meta: {
                   msg,
